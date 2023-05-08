@@ -1,0 +1,59 @@
+name: featherpad
+base: core22
+adopt-info: featherpad
+grade: stable
+confinement: strict
+compression: lzo
+architectures:
+  - build-on: amd64
+    build-for: amd64
+    
+slots:
+  featherpad:
+    interface: dbus
+    bus: session
+    name: com.github.tsujan.featherpad
+
+apps:
+  featherpad:
+    command: usr/bin/featherpad
+    extensions:
+      - kde-neon
+    plugs:
+      - home
+      - raw-usb
+      - network
+      - network-status
+      - optical-drive
+      - removable-media
+    common-id: com.github.tsujan.featherpad
+    desktop: usr/share/applications/featherpad.desktop
+    
+    
+parts:
+  featherpad:
+    source: https://github.com/tsujan/FeatherPad.git
+    plugin: cmake
+    parse-info: [usr/share/metainfo/featherpad.metainfo.xml]
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    build-packages:
+      - build-essential
+      - qttools5-dev-tools
+      - libqt5svg5-dev
+      - libhunspell-dev
+      - qtbase5-dev
+      - libqt5x11extras5-dev
+      - libx11-dev
+      - libxext-dev
+      - libqt5xml5
+    
+    build-snaps:
+      - kf5-5-105-qt-5-15-9-core22-sdk
+      - cmake
+      
+    override-pull: |
+      craftctl default
+      craftctl set version=$(git describe --tags --abbrev=0)
+      
+    
