@@ -47,13 +47,11 @@ parts:
       - libx11-dev
       - libxext-dev
       - libqt5xml5
-    
     build-snaps:
       - kf5-5-105-qt-5-15-9-core22-sdk
       - cmake
-      
     override-pull: |
       craftctl default
-      craftctl set version=$(git describe --tags --abbrev=0)
+      craftctl set version=$(git describe --tags --abbrev=0 | cut -c 2-)
       
     
